@@ -1,0 +1,103 @@
+<!--  必须包含
+	Common/calendar
+	Common/upload
+	Common/popup_warn
+
+	调用popupForm(板块,内容ID)
+-->
+<style>.row{padding:10px;}</style>
+<div class="custom-popup" id="form-popup-preview" style="width:600px;padding:0 30px 30px;">
+    <div class="popup-body" style="text-align:left">
+
+    </div>
+</div>
+<script>
+    function popupPreview(prodid){
+        prod = prods[prodid];
+        console.log(prod);
+        $('#form-popup-preview .popup-body').html('<div class="row">'+
+                '	<div class="col-md-3">作品ID：</div>'+
+                '	<div class="col-md-3">'+prodid+'</div>'+
+                '	<div class="col-md-3">参赛命题：</div>'+
+                '	<div class="col-md-3">'+prod.propo_title+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">作品名称：</div>'+
+                '	<div class="col-md-9">'+prod.name+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">简介：</div>'+
+                '	<div class="col-md-9">'+prod.descr+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">院校：</div>'+
+                '	<div class="col-md-3">'+prod.m_school+'</div>'+
+                '	<div class="col-md-3">联系方式：</div>'+
+                '	<div class="col-md-3">'+prod.m_contact+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">成员A：</div>'+
+                '	<div class="col-md-3">'+prod.m_A+'</div>'+
+                '	<div class="col-md-3">成员B：</div>'+
+                '	<div class="col-md-3">'+(prod.m_B ? prod.m_B : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">成员C：</div>'+
+                '	<div class="col-md-3">'+(prod.m_C ? prod.m_C : '')+'</div>'+
+                '	<div class="col-md-3">成员D：</div>'+
+                '	<div class="col-md-3">'+(prod.m_D ? prod.m_D : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">成员E：</div>'+
+                '	<div class="col-md-3">'+(prod.m_E ? prod.m_E : '')+'</div>'+
+                '	<div class="col-md-3">成员F：</div>'+
+                '	<div class="col-md-3">'+(prod.m_F ? prod.m_F : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">指导老师1：</div>'+
+                '	<div class="col-md-3">'+(prod.t_1 ? prod.t_1 : '')+'</div>'+
+                '	<div class="col-md-3">院校：</div>'+
+                '	<div class="col-md-3">'+(prod.t_1_school ? prod.t_1_school : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">职务：</div>'+
+                '	<div class="col-md-3">'+(prod.t_1_job ? prod.t_1_job : '')+'</div>'+
+                '	<div class="col-md-3">联系方式：</div>'+
+                '	<div class="col-md-3">'+(prod.t_1_contact? prod.t_1_contact : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">指导老师2：</div>'+
+                '	<div class="col-md-3">'+(prod.t_2 ? prod.t_2 : '')+'</div>'+
+                '	<div class="col-md-3">院校：</div>'+
+                '	<div class="col-md-3">'+(prod.t_2_school ? prod.t_2_school : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">职务：</div>'+
+                '	<div class="col-md-3">'+(prod.t_2_job ? prod.t_2_job : '')+'</div>'+
+                '	<div class="col-md-3">联系方式：</div>'+
+                '	<div class="col-md-3">'+(prod.t_2_contact? prod.t_2_contact : '')+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">参赛宣言：</div>'+
+                '	<div class="col-md-9">'+prod.declaration+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">作品点击量：</div>'+
+                '	<div class="col-md-3">'+prod.count_view+'</div>'+
+                '</div>'+
+                '<div class="row">'+
+                '	<div class="col-md-3">网投分<br/>'+prod.score_online+'</div>'+
+                '	<div class="col-md-3">评委分<br/>'+prod.score_rater+'</div>'+
+                '	<div class="col-md-3">小咖分<br/>'+prod.score_smallshot+'</div>'+
+                '	<div class="col-md-3">大咖分<br/>'+prod.score_bigshot+'</div>'+
+                '</div>'+
+                '<div class="col-sm-offset-5 col-sm-10 csad-btns">'+
+                '  <a id="preview-form-cancel" class="btn btn-info" onclick="previewCancel();">返回</a>'+
+                '</div>');
+        $('#form-popup-preview').popup({blur:false});
+        $('#form-popup-preview').popup('show');
+    }
+    function previewCancel(){
+        $('#form-popup-preview').popup('hide');
+    }
+</script>

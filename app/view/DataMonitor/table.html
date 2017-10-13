@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<table class="table table-hover" style="background:#fff; width:1500px;">
+    <thead>
+    <tr>
+        <th><input type="checkbox" id="checkbox-all"/></th>
+        <th>序号</th>
+        <th>主题</th>
+        <th>法人</th>
+        <th>注册时间</th>
+        <th>主营行业</th>
+        <th>注册资金</th>
+        <th>经营期限</th>
+        <th>企业状态</th>
+        <th>企业地址</th>
+        <th>企业电话</th>
+        <th>企业传真</th>
+        <th>企业网站</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach name="list" item="model"}
+    <tr>
+        <td><input type="checkbox" name="select" value="{$model.id}"/></td>
+        <td>{$model.id}</td>
+        <td>{$model.name}</td>
+        <td>{$model.legalperson}</td>
+        <td>{$model.establishedtime|date="Y-m-d H:i",###}</td>
+        <td>{$model.maintrade}</td>
+        <td>{$model.registeredfund}</td>
+        <td>{$model.operatingperiod}</td>
+        <td>{$model.companystate}</td>
+        <td>{$model.companyareas}</td>
+        <td>{$model.companyphone}</td>
+        <td>{$model.companyfax}</td>
+        <td><a href="{$model.companywebsite}">{$model.companywebsite}</a></td>
+        <td>
+            {if condition="authority('Company_browse')"}
+            <a href="__PRO_PATH__/Company/info?id={$model.id}">详情</a>
+            {/if}
+
+            {if condition="authority('Company_edit')"}
+            <a href="__PRO_PATH__/Company/edit?id={$model.id}">编辑</a>
+            {/if}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+<div class="bootstrap-table">
+    <div class="fixed-table-toolbar">
+        <div class="bs-bars pull-right"></div>
+        <div class="columns columns-right btn-group pull-right">
+            <button class="btn btn-default" type="button" name="refresh" aria-label="refresh" title="刷新"><i
+                    class="glyphicon glyphicon-refresh icon-refresh"></i></button>
+            <button class="btn btn-default" type="button" name="toggle" aria-label="toggle" title="切换"><i
+                    class="glyphicon glyphicon-list-alt icon-list-alt"></i></button>
+            <div class="keep-open btn-group" title="列">
+                <button type="button" aria-label="columns" class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown"><i class="glyphicon glyphicon-th icon-th"></i> <span
+                        class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="menuitem"><label><input type="checkbox" data-field="id" value="0" checked="checked">
+                        序号</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="c_name" value="1"
+                                                      checked="checked"> 企业名称</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="t1_name" value="2"
+                                                      checked="checked"> 一级主题</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="t2_name" value="3"
+                                                      checked="checked"> 二级主题</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="t3_name" value="4"
+                                                      checked="checked"> 三级主题</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="url" value="5" checked="checked">
+                        网址</label></li>
+                    <li role="menuitem"><label><input type="checkbox" data-field="snapshot" value="6"
+                                                      checked="checked"> 快照</label></li>
+                </ul>
+            </div>
+            <div class="export btn-group">
+                <button class="btn btn-default dropdown-toggle" aria-label="export type" title="Export data"
+                        data-toggle="dropdown" type="button"><i class="glyphicon glyphicon-export icon-share"></i>
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    <li role="menuitem" data-type="json"><a href="javascript:void(0)">JSON</a></li>
+                    <li role="menuitem" data-type="xml"><a href="javascript:void(0)">XML</a></li>
+                    <li role="menuitem" data-type="csv"><a href="javascript:void(0)">CSV</a></li>
+                    <li role="menuitem" data-type="txt"><a href="javascript:void(0)">TXT</a></li>
+                    <li role="menuitem" data-type="sql"><a href="javascript:void(0)">SQL</a></li>
+                    <li role="menuitem" data-type="excel"><a href="javascript:void(0)">MS-Excel</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="fixed-table-container" style="height: 882px; padding-bottom: 40px;">
+        <div class="fixed-table-header" style="margin-right: 0px;">
+            <table class="table table-hover table-striped" style="width: 989px;">
+                <thead>
+                <tr>
+                    <th style="text-align: center; vertical-align: middle; " data-field="id">
+                        <div class="th-inner sortable both">序号</div>
+                        <div class="fht-cell" style="width: 113px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="c_name">
+                        <div class="th-inner sortable both">企业名称</div>
+                        <div class="fht-cell" style="width: 159px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t1_name">
+                        <div class="th-inner ">一级主题</div>
+                        <div class="fht-cell" style="width: 120px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t2_name">
+                        <div class="th-inner ">二级主题</div>
+                        <div class="fht-cell" style="width: 121px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t3_name">
+                        <div class="th-inner ">三级主题</div>
+                        <div class="fht-cell" style="width: 121px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="url">
+                        <div class="th-inner ">网址</div>
+                        <div class="fht-cell" style="width: 270px;"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="snapshot">
+                        <div class="th-inner ">快照</div>
+                        <div class="fht-cell" style="width: 79px;"></div>
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="fixed-table-body">
+            <div class="fixed-table-loading" style="top: 41px; display: none;">正在努力地加载数据中，请稍候……</div>
+            <table class="table table-hover table-striped"
+                   style="background: rgb(255, 255, 255); margin-top: -40px;" id="mytab">
+                <thead>
+                <tr>
+                    <th style="text-align: center; vertical-align: middle; " data-field="id">
+                        <div class="th-inner sortable both">序号</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="c_name">
+                        <div class="th-inner sortable both">企业名称</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t1_name">
+                        <div class="th-inner ">一级主题</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t2_name">
+                        <div class="th-inner ">二级主题</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="t3_name">
+                        <div class="th-inner ">三级主题</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="url">
+                        <div class="th-inner ">网址</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                    <th style="text-align: center; vertical-align: middle; " data-field="snapshot">
+                        <div class="th-inner ">快照</div>
+                        <div class="fht-cell"></div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr data-index="0" data-uniqueid="1">
+                    <td style="text-align: center; vertical-align: middle; ">1</td>
+                    <td style="text-align: center; vertical-align: middle; ">华为1</td>
+                    <td style="text-align: center; vertical-align: middle; ">统计分析</td>
+                    <td style="text-align: center; vertical-align: middle; ">500强</td>
+                    <td style="text-align: center; vertical-align: middle; ">中国上市</td>
+                    <td style="text-align: center; vertical-align: middle; ">http://www.baidu.com</td>
+                    <td style="text-align: center; vertical-align: middle; ">1.jpg</td>
+                </tr>
+                <tr data-index="1" data-uniqueid="2">
+                    <td style="text-align: center; vertical-align: middle; ">2</td>
+                    <td style="text-align: center; vertical-align: middle; ">华为2</td>
+                    <td style="text-align: center; vertical-align: middle; ">统计分析</td>
+                    <td style="text-align: center; vertical-align: middle; ">500强</td>
+                    <td style="text-align: center; vertical-align: middle; ">中国上市</td>
+                    <td style="text-align: center; vertical-align: middle; ">http://www.baidu.com</td>
+                    <td style="text-align: center; vertical-align: middle; ">1.jpg</td>
+                </tr>
+                <tr data-index="2" data-uniqueid="3">
+                    <td style="text-align: center; vertical-align: middle; ">3</td>
+                    <td style="text-align: center; vertical-align: middle; ">华为3</td>
+                    <td style="text-align: center; vertical-align: middle; ">统计分析</td>
+                    <td style="text-align: center; vertical-align: middle; ">500强</td>
+                    <td style="text-align: center; vertical-align: middle; ">中国上市</td>
+                    <td style="text-align: center; vertical-align: middle; ">http://www.baidu.com</td>
+                    <td style="text-align: center; vertical-align: middle; ">1.jpg</td>
+                </tr>
+                <tr data-index="3" data-uniqueid="4">
+                    <td style="text-align: center; vertical-align: middle; ">4</td>
+                    <td style="text-align: center; vertical-align: middle; ">华为4</td>
+                    <td style="text-align: center; vertical-align: middle; ">统计分析</td>
+                    <td style="text-align: center; vertical-align: middle; ">500强</td>
+                    <td style="text-align: center; vertical-align: middle; ">中国上市</td>
+                    <td style="text-align: center; vertical-align: middle; ">http://www.baidu.com</td>
+                    <td style="text-align: center; vertical-align: middle; ">1.jpg</td>
+                </tr>
+                <tr data-index="4" data-uniqueid="5">
+                    <td style="text-align: center; vertical-align: middle; ">5</td>
+                    <td style="text-align: center; vertical-align: middle; ">华为5</td>
+                    <td style="text-align: center; vertical-align: middle; ">统计分析</td>
+                    <td style="text-align: center; vertical-align: middle; ">500强</td>
+                    <td style="text-align: center; vertical-align: middle; ">中国上市</td>
+                    <td style="text-align: center; vertical-align: middle; ">http://www.baidu.com</td>
+                    <td style="text-align: center; vertical-align: middle; ">1.jpg</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="fixed-table-footer" style="display: none;">
+            <table>
+                <tbody>
+                <tr></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="fixed-table-pagination" style="display: block;">
+            <div class="pull-left pagination-detail"><span
+                    class="pagination-info">显示第 1 到第 5 条记录，总共 5 条记录</span><span class="page-list"
+                                                                                style="display: none;">每页显示 <span
+                    class="btn-group dropup"><button type="button" class="btn btn-default dropdown-toggle"
+                                                     data-toggle="dropdown"><span class="page-size">50</span> <span
+                    class="caret"></span></button><ul class="dropdown-menu" role="menu"><li role="menuitem"><a
+                    href="#">10</a></li></ul></span> 条记录</span></div>
+            <div class="pull-right pagination" style="display: none;">
+                <ul class="pagination">
+                    <li class="page-pre"><a href="#">‹</a></li>
+                    <li class="page-number active"><a href="#">1</a></li>
+                    <li class="page-next"><a href="#">›</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table table-bordered" border="1" width="600" align="left" rules="all">
+    <tbody>
+    <tr align="center">
+        <td>法人</td>
+        <td>XXX</td>
+        <td>注册时间</td>
+        <td>2013/2/3</td>
+        <td>行业</td>
+        <td>建筑业</td>
+    </tr>
+    <tr align="center">
+        <td>注册资本</td>
+        <td>100万</td>
+        <td>企业状态</td>
+        <td>在业</td>
+        <td>企业地址</td>
+        <td>江苏省常州市XX路XX号</td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>
+
+<!-- 网站监测 -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="smart-widget widget-green">
+            <div class="smart-widget-header">
+                网站监测
+                <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+            </div>
+            <div class="smart-widget-inner">
+                <div class="smart-widget-hidden-section">
+                    <ul class="widget-color-list clearfix">
+                        <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                        <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                        <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                        <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                        <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                        <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                        <li style="background-color:#e36159;" data-color="widget-red"></li>
+                        <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                        <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                        <li style="background-color:#fff;" data-color="reset"></li>
+                    </ul>
+                </div>
+                <!-- 企业-主题气泡图 -->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p id="website_bar_num_limit" hidden="hidden">-1</p>
+                        <div class="smart-widget widget-green">
+                            <div class="smart-widget-inner">
+                                <div class="padding-md">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            显示数量<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-left" role="menu">
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, 10)">Top 10</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, 20)">Top 20</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, 30)">Top 30</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, 40)">Top 40</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, 50)">Top 50</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBubble(2, -1)">全部</a></li>
+                                        </ul>
+                                    </div>
+                                    <div id="company_theme_bubble_chart" class="echarts" style="height:300px;"></div>
+                                </div>
+                            </div>
+                        </div><!-- ./smart-widget -->
+                    </div><!-- ./col -->
+                    <div class="col-lg-6">
+                        <div class="smart-widget widget-green">
+                            <div class="smart-widget-inner">
+                                <div class="padding-md">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                            显示数量<span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu pull-left" role="menu">
+                                            <li><a href="javascript:;" onclick="changeNumBar(10)">Top 10</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBar(20)">Top 20</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBar(30)">Top 30</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBar(40)">Top 40</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBar(50)">Top 50</a></li>
+                                            <li><a href="javascript:;" onclick="changeNumBar(-1)">全部</a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="btn-group">
+                                        <select name="theme_id" class="form-control" style="width:100px" id="select-theme_id" onchange="changeTheme()">
+                                            <option value="-1">所有主题</option>
+                                            {foreach name="theme_list" item="theme"}
+                                            <option value="{$theme.id}" name="{$theme.name}" >{$theme.name}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                    <div id="company_theme_num_chart" class="echarts" style="height:300px;"></div>
+                                </div>
+                            </div><!-- ./smart-widget-inner -->
+                        </div><!-- ./smart-widget -->
+                    </div><!-- ./col -->
+                </div>
+            </div><!-- ./smart-widget-inner -->
+        </div><!-- ./smart-widget -->
+    </div><!-- ./col -->
+</div>

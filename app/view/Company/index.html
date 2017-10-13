@@ -1,0 +1,337 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md" style="overflow:auto;">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>企业库</li>
+        </ul>
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form">
+                <div class="form-group">
+                    <label for="name">企业名称：</label>
+                    <input name="name" class="form-control" id="name" style="width:150px"
+                           value="{$cond.name ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <label for="tag_id">企业标签：</label>
+                    <select name="tag_id" class="form-control" style="width:150px" id="tag_id">
+                        <option value="-1">全部</option>
+                        {foreach name="tags" item="tag" key="k"}
+                        <option value="{$k}">{$tag.title}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="keywords">关键词：</label>
+                    <input name="keywords" class="form-control" id="keywords" style="width:200px"
+                           value="{$cond.keywords ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="sortCol" class="form-control" id="sortCol"
+                           value="{$cond.sortCol ?? ''}">
+                </div>
+                <button type="submit" class="btn btn-info">查询</button>
+            </form>
+        </div>
+        <div class="list-btns">
+            {if condition="authority('Company_add')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-success" id="addItem">新建</button>
+            </div>
+            {/if}
+            {if condition="authority('Company_del')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="removeItem">删除</button>
+            </div>
+            {/if}
+
+            {if condition="authority('Company_export')"}
+            <div class="btn-group fr">
+                <a href="__PRO_PATH__/Company/export" target="_blank" type="button" class="btn btn-default fr">导出</a>
+            </div>
+            {/if}
+            {if condition="authority('Company_import')"}
+            <div class="btn-group fr">
+                <button type="button" class="btn btn-default" id="importItem">导入</button>
+            </div>
+            {/if}
+        </div>
+        <table class="table table-hover" style="background:#fff; width:2000px;">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkbox-all"/></th>
+                <th>序号
+                    <a href="javascript:;" id="sort_id" onclick="setSortCol('id')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>名称
+                    <a id="sort_name" onclick="setSortCol('name')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>标签
+                    <a id="sort_tag" onclick="setSortCol('tag')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>法人
+                    <a id="sort_legalperson" onclick="setSortCol('legalperson')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>注册时间
+                    <a id="sort_establishedtime" onclick="setSortCol('establishedtime')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>主营行业
+                    <a id="sort_maintrade" onclick="setSortCol('maintrade')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>注册资金
+                    <a id="sort_registeredfund" onclick="setSortCol('registeredfund')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>经营期限
+                    <a id="sort_operatingperiod" onclick="setSortCol('operatingperiod')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>状态
+                    <a id="sort_companystate" onclick="setSortCol('companystate')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>地址
+                    <a id="sort_companyareas" onclick="setSortCol('companyareas')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>电话
+                    <a id="sort_companyphone" onclick="setSortCol('companyphone')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>传真
+                    <a id="sort_companyfax" onclick="setSortCol('companyfax')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>网站
+                    <a id="sort_companywebsite" onclick="setSortCol('companywebsite')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="model"}
+            <tr>
+                <td><input type="checkbox" name="select" value="{$model.id}"/></td>
+                <td>{$model.id}</td>
+                <td><a href="__PRO_PATH__/Company/info?id={$model.id}" title="查看详情">{$model.name}</a></td>
+                <td>{$model.tag}</td>
+                <td>{$model.legalperson}</td>
+                <td>{$model.establishedtime|date="Y-m-d",###}</td>
+                <td>{$model.maintrade}</td>
+                <td>{$model.registeredfund}</td>
+                <td>{$model.operatingperiod}</td>
+                <td>{$model.companystate}</td>
+                <td>{$model.companyareas}</td>
+                <td>{$model.companyphone}</td>
+                <td>{$model.companyfax}</td>
+                <td><a href="{$model.companywebsite}">{$model.companywebsite}</a></td>
+                <td>
+                    {if condition="authority('Company_browse')"}
+                    <a href="__PRO_PATH__/Company/info?id={$model.id}">详情</a>
+                    {/if}
+
+                    {if condition="authority('Company_edit')"}
+                    <a href="__PRO_PATH__/Company/edit?id={$model.id}">编辑</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {$list->render()}
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/upload" /}
+{include file="Common/popup_import" /}
+<script>
+    $('#tax-nav-warehouse').addClass('active open');
+    $('#tax-nav-warehouse-sub1').addClass('active');
+
+    // 改变排序方向
+    function changeSort(sort) {
+        if (sort == 'asc'){
+            return 'desc';
+        }else{
+            return 'asc';
+        }
+    }
+
+    // 设置排序参数
+    function setSortCol(col) {
+        var sort = $('#sortCol');
+        var title;
+        switch(col) {
+            case 'id':
+                title = $("#sort_id").attr('title');
+                sort.val("id " + title);
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'name':
+                title = $("#sort_name").attr('title');
+                sort.val("name " + title);
+                $("#sort_name").attr({"title" : changeSort(title)});
+                $("#sort_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'legalperson':
+                title = $("#sort_legalperson").attr('title');
+                sort.val("legalperson " + title);
+                $("#sort_legalperson").attr({"title" : changeSort(title)});
+                $("#sort_legalperson i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'establishedtime':
+                title = $("#sort_establishedtime").attr('title');
+                sort.val("establishedtime " + title);
+                $("#sort_establishedtime").attr({"title" : changeSort(title)});
+                $("#sort_establishedtime i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'maintrade':
+                title = $("#sort_maintrade").attr('title');
+                sort.val("maintrade " + title);
+                $("#sortmaintrade").attr({"title" : changeSort(title)});
+                $("#sort_maintrade i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'registeredfund':
+                title = $("#sort_registeredfund").attr('title');
+                sort.val("registeredfund " + title);
+                $("#sort_registeredfund").attr({"title" : changeSort(title)});
+                $("#sort_registeredfund i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'operatingperiod':
+                title = $("#sort_operatingperiod").attr('title');
+                sort.val("operatingperiod " + title);
+                $("#sort_operatingperiod").attr({"title" : changeSort(title)});
+                $("#sort_operatingperiod i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companystate':
+                title = $("#sort_companystate").attr('title');
+                sort.val("companystate " + title);
+                $("#sort_companystate").attr({"title" : changeSort(title)});
+                $("#sort_companystate i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyareas':
+                title = $("#sort_companyareas").attr('title');
+                sort.val("companyareas " + title);
+                $("#sort_companyareas").attr({"title" : changeSort(title)});
+                $("#sort_companyareas i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyphone':
+                title = $("#sort_companyphone").attr('title');
+                sort.val("companyphone " + title);
+                $("#sort_companyphone").attr({"title" : changeSort(title)});
+                $("#sort_companyphone i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyfax':
+                title = $("#sort_companyfax").attr('title');
+                sort.val("companyfax " + title);
+                $("#sort_companyfax").attr({"title" : changeSort(title)});
+                $("#sort_companyfax i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companywebsite':
+                title = $("#sort_companywebsite").attr('title');
+                sort.val("companywebsite " + title);
+                $("#sort_companywebsite").attr({"title" : changeSort(title)});
+                $("#sort_companywebsite i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+        $('#main-form').submit();
+    }
+
+    // 获取排序参数
+    function getSortCol(sortcol) {
+        var col = sortcol.split(' ');
+        var title = col[1];
+        switch(col[0]) {
+            case 'id':
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'name':
+                $("#sort_name").attr({"title" : changeSort(title)});
+                $("#sort_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'legalperson':
+                $("#sort_legalperson").attr({"title" : changeSort(title)});
+                $("#sort_legalperson i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'establishedtime':
+                $("#sort_establishedtime").attr({"title" : changeSort(title)});
+                $("#sort_establishedtime i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'maintrade':
+                $("#sort_maintrade").attr({"title" : changeSort(title)});
+                $("#sort_maintrade i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'registeredfund':
+                $("#sort_registeredfund").attr({"title" : changeSort(title)});
+                $("#sort_registeredfund i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'operatingperiod':
+                $("#sort_operatingperiod").attr({"title" : changeSort(title)});
+                $("#sort_operatingperiod i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companystate':
+                $("#sort_companystate").attr({"title" : changeSort(title)});
+                $("#sort_companystate i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyareas':
+                $("#sort_companyareas").attr({"title" : changeSort(title)});
+                $("#sort_companyareas i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyphone':
+                $("#sort_companyphone").attr({"title" : changeSort(title)});
+                $("#sort_companyphone i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companyfax':
+                $("#sort_companyfax").attr({"title" : changeSort(title)});
+                $("#sort_companyfax i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'companywebsite':
+                $("#sort_companywebsite").attr({"title" : changeSort(title)});
+                $("#sort_companywebsite i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+    }
+
+    $('#name').val('{$cond.name ?? ""}');
+    $('#tag_id').val('{$cond.tag_id ?? -1}');
+    $('#keywords').val('{$cond.keywords ?? ""}');
+    $('#sortCol').val('{$cond.sortCol ?? ""}');
+    var sort = $('#sortCol').val();
+    getSortCol(sort);
+
+    // common
+    popupList({
+        create: '__PRO_PATH__/Company/create',
+        remove: '__PRO_PATH__/Company/remove'
+    });
+
+    popupImport({
+        import: '__PRO_PATH__/Company/import'
+    });
+
+</script>

@@ -1,0 +1,126 @@
+<!-- 必须包含
+	Common/popup_warn
+	
+	调用：popupList(配置);
+ -->
+<div class="custom-popup" id="confirm-popup" style="width:200px;">
+    <div class="popup-body text-center">
+        <h5>您确定要删除吗？</h5>
+        <div class="text-center m-top-lg">
+            <a class="btn btn-success m-right-sm confirm-do">删除</a>
+            <a class="btn btn-default confirm-cancel">取消</a>
+        </div>
+    </div>
+</div>
+<div class="custom-popup" id="stop-confirm-popup" style="width:200px;">
+    <div class="popup-body text-center">
+        <h5>您确定要终止任务吗？</h5>
+        <div class="text-center m-top-lg">
+            <a class="btn btn-warning m-right-sm confirm-stop">终止</a>
+            <a class="btn btn-default confirm-stop-cancel">取消</a>
+        </div>
+    </div>
+</div>
+<script>
+    function popupList(config) {
+        $('#addItem').on('click', function () {
+            console.log('add');
+            window.location.href = config.create;
+        });
+        $('#addFirstItem').on('click', function () {
+            console.log('add');
+            window.location.href = config.createFirst;
+        });
+        $('#addSecondItem').on('click', function () {
+            console.log('add');
+            window.location.href = config.createSecond;
+        });
+        $('#addThirdItem').on('click', function () {
+            console.log('add');
+            window.location.href = config.createThird;
+        });
+        $('#removeItem').on('click', function () {
+            console.log('test');
+            $('#confirm-popup').popup('show');
+        });
+        $('#stopItems').on('click', function () {
+            console.log('test');
+            $('#stop-confirm-popup').popup('show');
+        });
+        $('.confirm-do').on('click', function () {
+            $('#confirm-popup').popup('hide');
+            var ids = [];
+            $("input[name='select']:checked").each(function () {
+                ids.push(this.value);
+            });
+            if (ids.length <= 0) {
+                $('#warn-popup h5').html('请选择至少一条');
+                $('#warn-popup').popup('show');
+                return;
+            }
+            $.get(config.remove, {ids: ids.join(',')}, function (res) {
+                if (res['code'] == 1) {
+                    window.location.reload();
+                } else {
+                    popWarn('删除失败');
+                }
+            });
+        });
+
+        $('.confirm-stop').on('click', function () {
+            $('#stop-confirm-popup').popup('hide');
+            var ids = [];
+            $("input[name='select']:checked").each(function () {
+                ids.push(this.value);
+            });
+            if (ids.length <= 0) {
+                $('#warn-popup h5').html('请选择至少一条');
+                $('#warn-popup').popup('show');
+                return;
+            }
+            $.get(config.remove, {ids: ids.join(',')}, function (res) {
+                if (res['code'] == 1) {
+                    window.location.reload();
+                } else {
+                    popWarn('终止失败');
+                }
+            });
+        });
+    }
+    $('.confirm-cancel').on('click', function () {
+        $('#confirm-popup').popup('hide');
+    });
+    $('.confirm-stop-cancel').on('click', function () {
+        $('#stop-confirm-popup').popup('hide');
+    });
+    var len = $("input[name='select']").length;
+    $('#checkbox-all').on('click', function () {
+        if (this.checked) {
+            $("input[name='select']").prop('checked', true);
+        } else {
+            $("input[name='select']").prop('checked', false);
+        }
+    });
+    $("input[name='select']").on('click', function () {
+        if ($("input[name='select']:checked").length == len) {
+            $('#checkbox-all').prop('checked', true);
+        } else {
+            $('#checkbox-all').prop('checked', false);
+        }
+    });
+    $(function () {
+        //Delete Widget Confirmation
+        $('#confirm-popup').popup({
+            vertical: 'top',
+            transition: 'all 0.3s'
+        });
+        $('#form-popup').popup({
+            vertical: 'top',
+            transition: 'all 0.3s'
+        });
+        $('#stop-confirm-popup').popup({
+            vertical: 'top',
+            transition: 'all 0.3s'
+        });
+    });
+</script>

@@ -1,0 +1,293 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md" style="overflow: auto">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>数据监测</li>
+            <li>数据详情</li>
+        </ul>
+
+        <!-- 搜索条件 -->
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form">
+                <div class="form-group">
+                    <label>时间范围：</label>
+                    <input placeholder="开始时间" id="form-stime" name="begintime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr" style="width:250px">
+                    <span> ~ </span>
+                    <input placeholder="结束时间" id="form-etime" name="endtime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr" style="width:250px">
+                </div>
+                <br/><br/>
+                <div class="form-group">
+                    <label for="c_name">企业名称：</label>
+                    <input name="c_name" class="form-control" id="c_name" style="width:150px"
+                           value="{$cond.c_name ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <label for="tag_id">企业标签：</label>
+                    <select name="tag_id" class="form-control" style="width:100px" id="tag_id">
+                        <option value="-1">全部</option>
+                        {foreach name="tags" item="tag"}
+                        <option value="{$tag.id}">{$tag.title}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="theme_id">主题：</label>
+                    <select name="theme_id" class="form-control" style="width:100px" id="theme_id">
+                        <option value="-1">--请选择--</option>
+                        {foreach name="theme_list" item="t1"}
+                        <optgroup label="{$t1.t1_name}">
+                            {foreach name="t1['t1_content']" item="t2"}
+                            <option value="{$t2.t2_id}">{$t2.t2_name}</option>
+                            {/foreach}
+                        </optgroup>
+                        {/foreach}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="keywords">关键词：</label>
+                    <input name="keywords" class="form-control" id="keywords" style="width:150px"
+                           value="{$cond.keywords ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="sortCol" class="form-control" id="sortCol"
+                           value="{$cond.sortCol ?? ''}">
+                </div>
+                <button type="submit" class="btn btn-info">查询</button>
+            </form>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="list-btns">
+            {if condition="authority('MonitorData_add')"}
+            <button type="button" class="btn btn-success hide" id="addItem">新建</button>
+            {/if}
+            {if condition="authority('MonitorData_del')"}
+            <button type="button" class="btn btn-default hide" id="removeItem">删除</button>
+            {/if}
+            {if condition="authority('MonitorData_export')"}
+            <a href="__PRO_PATH__/DataMonitor/export" target="_blank" type="button" class="btn btn-default fr">导出</a>
+            {/if}
+        </div>
+
+        <!-- 数据表 -->
+        <table class="table table-hover" style="background:#fff; width:1500px;">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkbox-all"/></th>
+                <th>序号
+                    <a href="javascript:;" id="sort_id" onclick="setSortCol('id')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>企业名称
+                    <a id="sort_c_name" onclick="setSortCol('c_name')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>一级主题
+                    <a href="javascript:;" id="sort_t1" onclick="setSortCol('t1')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>二级主题
+                    <a href="javascript:;" id="sort_t2" onclick="setSortCol('t2')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>三级主题
+                    <a href="javascript:;" id="sort_t3" onclick="setSortCol('t3')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i></a>
+                </th>
+                <th>网址</th>
+                <th>快照</th>
+                <th>任务编号
+                    <a href="javascript:;" id="sort_task_id" onclick="setSortCol('task')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>采集时间
+                    <a href="javascript:;" id="sort_time" onclick="setSortCol('time')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="model"}
+            <tr>
+                <td><input type="checkbox" name="select" value="{$model.id}"/></td>
+                <td>{$model.id}</td>
+                <td><a href="__PRO_PATH__/Company/info?id={$model.id}" title="查看详情">{$model.c_name}</a></td>
+                <td>{$model.t1_name}</td>
+                <td>{$model.t2_name}</td>
+                <td>{$model.t3_name}</td>
+                <td><a href="{$model.url}">{$model.url}</a></td>
+                <td><img src="" width="100" height="30"></td>
+                <td>{$model.task_id}</td>
+                <td>{$model.createtime|date="Y-m-d H:i",###}</td>
+                <td>
+                    {if condition="authority('Company_browse')"}
+                    <a href="__PRO_PATH__/Company/info?id={$model.c_id}">详情</a>
+                    {/if}
+
+                    {if condition="authority('Company_edit')"}
+                    <a href="__PRO_PATH__/Company/edit?id={$model.c_id}">编辑</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {$list->render()}
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/calendar" /}
+{include file="Common/bottom" /}
+<script src="__PUBLIC__/js/bootstrap-table/dist/bootstrap-table.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap-table/dist/extensions/export/tableExport.js"></script>
+<script>
+    $('#tax-nav-monitor').addClass('active open');
+    $('#tax-nav-monitor-sub1').addClass('active');
+
+    // 获取参数设置
+    function getParams(){
+        var data = $('#main-form').serializeArray();
+        $.each(data, function() {
+            params[this.name] = this.value;
+        });
+        var tblimit = $('#theme_bubble_limit').text();
+        params['limit'] = parseInt(tblimit);
+        var bnlimit = $('#bubble_num_limit').text();
+        params['bubble_num_limit'] = parseInt(bnlimit);
+        var barnlimit = $('#bar_num_limit').text();
+        var btlimit = $('#bar_theme_limit').text();
+        params['bar_num_limit'] = parseInt(barnlimit);
+        params['bar_theme_limit'] = parseInt(btlimit);
+
+    }
+
+    // 按时间范围查询
+    $('#searchBtn').click(function(){
+        $('#searching_icon').show();
+        getParams();
+        showCompanyBubble();
+        showCompanyBar();
+    });
+
+    // 改变排序方向
+    function changeSort(sort) {
+        if (sort == 'asc'){
+            return 'desc';
+        }else{
+            return 'asc';
+        }
+    }
+
+    // 设置排序参数
+    function setSortCol(col) {
+        var sort = $('#sortCol');
+        var title;
+        switch(col) {
+            case 'id':
+                title = $("#sort_id").attr('title');
+                sort.val("a.id " + title);
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'c_name':
+                title = $("#sort_c_name").attr('title');
+                sort.val("b.name " + title);
+                $("#sort_c_name").attr({"title" : changeSort(title)});
+                $("#sort_c_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't1':
+                title = $("#sort_t1").attr('title');
+                sort.val("e.name " + title);
+                $("#sort_t1").attr({"title" : changeSort(title)});
+                $("#sort_t1 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't2':
+                title = $("#sort_t2").attr('title');
+                sort.val("d.name " + title);
+                $("#sort_t2").attr({"title" : changeSort(title)});
+                $("#sort_t2 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't3':
+                title = $("#sort_t3").attr('title');
+                sort.val("c.name " + title);
+                $("#sort_t3").attr({"title" : changeSort(title)});
+                $("#sort_t3 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'task':
+                title = $("#sort_task_id").attr('title');
+                sort.val("a.task_id " + title);
+                $("#sort_task_id").attr({"title" : changeSort(title)});
+                $("#sort_task_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'time':
+                title = $("#sort_time").attr('title');
+                sort.val("a.createtime " + title);
+                $("#sort_time").attr({"title" : changeSort(title)});
+                $("#sort_time i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+        $('#main-form').submit();
+    }
+
+    // 获取排序参数
+    function getSortCol(sortcol) {
+        var col = sortcol.split(' ');
+        var title = col[1];
+        switch(col[0]) {
+            case 'a.id':
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'b.name':
+                $("#sort_c_name").attr({"title" : changeSort(title)});
+                $("#sort_c_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'e.name':
+                $("#sort_t1").attr({"title" : changeSort(title)});
+                $("#sort_t1 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'd.name':
+                $("#sort_t2").attr({"title" : changeSort(title)});
+                $("#sort_t2 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'c.name':
+                $("#sort_t3").attr({"title" : changeSort(title)});
+                $("#sort_t3 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'a.task_id':
+                $("#sort_task_id").attr({"title" : changeSort(title)});
+                $("#sort_task_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'a.createtime':
+                $("#sort_time").attr({"title" : changeSort(title)});
+                $("#sort_time i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+    }
+
+    $('#name').val('{$cond.c_name ?? ""}');
+    $('#tag_id').val('{$cond.tag_id ?? -1}');
+    $('#theme_id').val('{$cond.theme_id ?? -1}');
+    $('#keywords').val('{$cond.keywords ?? ""}');
+    $('#form-stime').val('{$cond.begintime_str ?? ""}');
+    $('#form-etime').val('{$cond.endtime_str ?? ""}');
+    $('#sortCol').val('{$cond.sortCol ?? ""}');
+    var sort = $('#sortCol').val();
+    getSortCol(sort);
+
+    // common
+    $(".flatpickr").flatpickr({time_24hr:true});
+</script>

@@ -1,0 +1,127 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>采集管理</li>
+            <li>采集项目</li>
+        </ul>
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form">
+                <div class="form-group">
+                    <label for="id">任务编号：</label>
+                    <input name="id" class="form-control" id="id" style="width:150px"
+                           value="{$cond.id ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <label for="taskstatus">采集状态：</label>
+                    <select name="taskstatus" class="form-control" style="width:150px" id="taskstatus">
+                        <option value="-1">全部</option>
+                        {foreach name="tags" item="tag" key="k"}
+                        <option value="{$k}">{$tag.title}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info">查询</button>
+            </form>
+        </div>
+        <div class="list-btns">
+            {if condition="authority('Task_add')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-success" id="addItem">新建</button>
+            </div>
+            {/if}
+            {if condition="authority('Task_stop')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="stopItems">终止</button>
+            </div>
+            {/if}
+        </div>
+        <table class="table table-hover" style="background:#fff;">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkbox-all"/></th>
+                <th>任务编号</th>
+                <th>采集进度</th>
+                <th></th>
+                <th>采集数据</th>
+                <th>预计耗时</th>
+                <th>已耗时</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="model" key="k"}
+            <tr>
+                <td><input type="checkbox" name="select" value="{$model.id}" /></td>
+                <td>{$model.id}</td>
+                <td>
+                    <div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+                        <div class="progress-bar" style="width: {$model.progress}%">
+                            <span class="sr-only">{$model.progress}% Complete</span>
+                        </div>
+                    </div>
+                </td>
+                <td>{$model.progress}%</td>
+                <td>{$model.count}</td>
+                <td><span class="badge badge-warning">{$model.pretime}hr</span></td>
+                <td><span class="badge badge-info">{$model.time}hr</span></td>
+                <td>{if condition="$model.begintime"}{$model.begintime |date="Y-m-d H:i",###}{/if}</td>
+                <td>{if condition="$model.endtime"}{$model.endtime |date="Y-m-d H:i",###}{/if}</td>
+                <td>
+                    {if condition="$model.taskstatus eq 0"}
+                    <span class="label label-success">采集中</span>
+                    {/if}
+                    {if condition="$model.taskstatus eq 1"}
+                    <span class="label label label-danger">中断</span>
+                    {/if}
+                    {if condition="$model.taskstatus eq 2"}
+                    <span class="label label label-info">结束</span>
+                    {/if}
+                </td>
+                <td>
+                    {if condition="$model.taskstatus eq 0"}
+                    <a href="javascript:;" onclick="stopItem({$model.id})">终止</a>
+                    {/if}
+                    {if condition="$model.taskstatus eq 1"}
+                    <a href="javascript:;" class="contact">联系管理员</a>
+                    {/if}
+                    {if condition="$model.taskstatus eq 2"}
+                    <a href="javascript:;">查看</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {$list->render()}
+    </div>
+</div><!-- /main-container -->
+{include file="Common/calendar" /}
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+<script>
+    $('#tax-nav-task').addClass('active open');
+    $('#tax-nav-task-sub1').addClass('active');
+
+    $('#id').val('{$cond.id ?? ""}');
+    $('#taskstatus').val('{$cond.taskstatus ?? -1}');
+
+    // common
+    popupList({
+        create: '__PRO_PATH__/Task/create',
+        remove: '__PRO_PATH__/Task/stop'
+    });
+
+    // 终止一个任务
+    function stopItem(id) {
+        $("input[name='select'][value="+id+"]").attr("checked", 'checked');
+        console.log('test');
+        $('#stop-confirm-popup').popup('show');
+    }
+</script>

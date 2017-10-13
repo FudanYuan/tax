@@ -1,0 +1,24 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>采集管理</li>
+            <li>抓取设置</li>
+        </ul>
+        该模块设计中，敬请期待
+    </div>
+</div><!-- /main-container -->
+{include file="Common/calendar" /}
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+<script>
+    $('#tax-nav-task').addClass('active open');
+    $('#tax-nav-task-sub2').addClass('active');
+    // common
+    popupList({
+        remove: '__PRO_PATH__/Task/stop'
+    });
+</script>

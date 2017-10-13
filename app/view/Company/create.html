@@ -1,0 +1,133 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Company/index">企业库</a></li>
+            <li>新建</li>
+        </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post" id="main-form">
+                <div class="form-group {$errors.name ?= 'has-error'}">
+                    <label for="name" class="col-sm-2 control-label">企业名称：</label>
+                    <div class="col-sm-4">
+                        <input name="name" type="text" class="form-control" id="name" value="{$data.name??''}">
+                        <span class="help-block">{$errors.name??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.tagid ?= 'has-error'}">
+                    <label for="tag" class="col-sm-2 control-label">企业标签：</label>
+                    <div class="col-sm-4">
+                        <select name="tagid" class="form-control" style="width:100px" id="tag">
+                            <option value="-1">--选择--</option>
+                            {foreach name="tags" item="tag" key="k"}
+                            <option value="{$k}">{$tag.title}</option>
+                            {/foreach}
+                        </select>
+                        <span class="help-block">{$errors.tagid ?? ''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.legalperson ?= 'has-error'}">
+                    <label for="legalperson" class="col-sm-2 control-label">企业法人：</label>
+                    <div class="col-sm-4">
+                        <input name="legalperson" type="text" class="form-control" id="legalperson" value="{$data.legalperson??''}">
+                        <span class="help-block">{$errors.legalperson??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.establishedtime ?= 'has-error'}">
+                    <label for="establishedtime" class="col-sm-2 control-label">注册时间：</label>
+                    <div class="col-sm-4">
+                        <input name="establishedtime" type="text" class="form-control" id="establishedtime" value="{$data.establishedtime??''}">
+                        <span class="help-block">{$errors.establishedtime??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.maintrade ?= 'has-error'}">
+                    <label for="maintrade" class="col-sm-2 control-label">主营行业：</label>
+                    <div class="col-sm-4">
+                        <input name="maintrade" type="text" class="form-control" id="maintrade" value="{$data.maintrade??''}">
+                        <span class="help-block">{$errors.maintrade??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.registeredfund ?= 'has-error'}">
+                    <label for="registeredfund" class="col-sm-2 control-label">注册资金：</label>
+                    <div class="col-sm-4">
+                        <input name="registeredfund" type="text" class="form-control" id="registeredfund" value="{$data.registeredfund??''}">
+                        <span class="help-block">{$errors.registeredfund??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.operatingperiod ?= 'has-error'}">
+                    <label for="operatingperiod" class="col-sm-2 control-label">经营期限：</label>
+                    <div class="col-sm-4">
+                        <input name="operatingperiod" type="text" class="form-control" id="operatingperiod" value="{$data.operatingperiod??''}">
+                        <span class="help-block">{$errors.operatingperiod??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.companystate ?= 'has-error'}">
+                    <label for="companystate" class="col-sm-2 control-label">企业状态：</label>
+                    <div class="col-sm-4">
+                        <input name="companystate" type="text" class="form-control" id="companystate" value="{$data.companystate??''}">
+                        <span class="help-block">{$errors.companystate??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.companyareas ?= 'has-error'}">
+                    <label for="companyareas" class="col-sm-2 control-label">企业地址：</label>
+                    <div class="col-sm-4">
+                        <input name="companyareas" type="text" class="form-control" id="companyareas" value="{$data.companyareas??''}">
+                        <span class="help-block">{$errors.companyareas??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.companyphone ?= 'has-error'}">
+                    <label for="companyphone" class="col-sm-2 control-label">企业电话：</label>
+                    <div class="col-sm-4">
+                        <input name="companyphone" type="text" class="form-control" id="companyphone" value="{$data.companyphone??''}">
+                        <span class="help-block">{$errors.companyphone??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.companyfax ?= 'has-error'}">
+                    <label for="companyfax" class="col-sm-2 control-label">企业传真：</label>
+                    <div class="col-sm-4">
+                        <input name="companyfax" type="text" class="form-control" id="companyfax" value="{$data.companyfax??''}">
+                        <span class="help-block">{$errors.companyfax??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.companywebsite ?= 'has-error'}">
+                    <label for="companywebsite" class="col-sm-2 control-label">企业网站：</label>
+                    <div class="col-sm-4">
+                        <input name="companywebsite" type="text" class="form-control" id="companywebsite" value="{$data.companywebsite??''}">
+                        <span class="help-block">{$errors.companywebsite??''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                        <button type="submit" class="btn btn-success">保存</button>
+                        <a id="form-cancel" class="btn btn-info">取消</a>
+                        <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+<script>
+    $('#tax-nav-warehouse').addClass('active open');
+    $('#tax-nav-warehouse-sub1').addClass('active');
+
+    $('#tag').val('{$data.tagid ?? ""}');
+
+    $('#form-cancel').on('click', function () {
+        window.location.href = '__PRO_PATH__/Company/index';
+    });
+</script>
